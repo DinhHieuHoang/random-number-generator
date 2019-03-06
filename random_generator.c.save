@@ -1,0 +1,35 @@
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/version.h>
+#include <linux/kernel.h>
+#include <linux/types.h>
+#include <linux/kdev_t.h>
+
+#define DRIVER_AUTHOR "Hoang Dinh Hieu <hdhieu@apcs.vn>, Trinh Tuan Kiet <ttkiet16@apcs.vn>"
+#define DRIVER_DESC "Random-number generator kernel module"
+
+static dev_t first;
+
+static int __init ofcd_init(void)
+{
+	printk(
+}
+
+static int __init init_random_generator(void)
+{
+	printk("Installing random-number generator...");
+	return0;
+}
+
+static void __exit exit_random_generator(void)
+{
+	printk("Uninstalling random-number generator...");
+}
+
+module_init(init_random_generator);
+module_exit(exit_random_generator);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR(DRIVER_AUTHOR);
+MODULE_DESCRIPTION(DRIVER_DESC);
+MODULE_SUPPORTED_DEVICE("testdevice");
