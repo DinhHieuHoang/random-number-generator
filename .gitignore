@@ -1,0 +1,6 @@
+*.*
+!.gitignore
+!random_generator.c
+!makefile
+!Kbuild
+!README
