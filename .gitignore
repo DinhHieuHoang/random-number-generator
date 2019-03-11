@@ -1,8 +1,8 @@
-.o
-.ko
-.save
-.cmd
+*.o
+*.ko
+*.save
+*.cmd
 Module.symvers
 modules.order
-.tmp_version
+.tmp_versions
 .cache.mk
