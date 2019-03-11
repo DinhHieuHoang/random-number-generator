@@ -1,6 +1,8 @@
-*.*
-!.gitignore
-!random_generator.c
-!makefile
-!Kbuild
-!README
+.o
+.ko
+.save
+.cmd
+Module.symvers
+modules.order
+.tmp_version
+.cache.mk
