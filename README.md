@@ -7,6 +7,9 @@ Build the kernel object module
     $ make
     $ modinfo random_generator.ko
 
+    // clear the build
+    $ make clean
+
 ## Install/Uninstall module
 
 Install the module
@@ -16,7 +19,7 @@ Install the module
 
 Uninstall the module
 
-    $ sudo rmmod random_generator.ko
+    $ sudo rmmod random_generator
     $ dmesg
 
 Check the installation status

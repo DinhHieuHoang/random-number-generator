@@ -20,19 +20,19 @@ static char my_buffer[20];
 
 static int my_open(struct inode *i, struct file *f)
 {
-	printk(KERN_INFO "Driver: open()\n");
+	printk(KERN_INFO "[INFO] random_number_generator: open()\n");
 	return 0;
 }
 
 static int my_close(struct inode *i, struct file *f)
 {
-	printk(KERN_INFO "Driver: close()\n");
+	printk(KERN_INFO "[INFO] random_number_generator: close()\n");
 	return 0;
 }
 
 static ssize_t my_read(struct file *f, char __user *buf, size_t len, loff_t *off)
 {
-	printk(KERN_INFO "Driver: read()\n");
+	printk(KERN_INFO "[INFO] random_number_generator: read()\n");
 	get_random_bytes(&r, sizeof(int));
 	sprintf(my_buffer, "%d\n", r);
 	if(*off > 0)
@@ -44,13 +44,13 @@ static ssize_t my_read(struct file *f, char __user *buf, size_t len, loff_t *off
 		return -EFAULT;
 	}
 	*off+=strlen(my_buffer);
-	printk("%d\n", r);
+	printk(KERN_INFO "[INFO] random_number_generator: %d\n", r);
 	return strlen(my_buffer);
 }
 
 static ssize_t my_write(struct file *f, const char __user *buf, size_t len, loff_t *off)
 {
-	printk(KERN_INFO "Driver: write()\n");
+	printk(KERN_INFO "[INFO] random_number_generator: write()\n");
 	return len;
 }
 
@@ -65,18 +65,21 @@ static struct file_operations pugs_fops =
 
 static int __init init_random_generator(void)
 {
-	printk(KERN_INFO "random-number generator registered");
+	printk(KERN_INFO "[INFO] random_number_generator: Registering\n");
 	if(alloc_chrdev_region(&first, 0, 1, "hdhieu") < 0 )
 	{
+		printk(KERN_ERR "[ERROR] random_number_generator: Failed to allocate char device region.\n");
 		return -1;
 	}
 	if((cl = class_create(THIS_MODULE, "random_generator")) == NULL)
 	{
+		printk(KERN_ERR "[ERROR] random_number_generator: Failed to create device class.\n");
 		unregister_chrdev_region(first, 1);
 		return -1;
 	}
 	if(device_create(cl, NULL, first, NULL, "random_generator") == NULL)
 	{
+		printk(KERN_ERR "[ERROR] random_number_generator: Failed to create device.\n");
 		class_destroy(cl);
 		unregister_chrdev_region(first, 1);
 		return -1;
@@ -84,22 +87,24 @@ static int __init init_random_generator(void)
 	cdev_init(&c_dev, &pugs_fops);
 	if(cdev_add(&c_dev, first, 1) == -1)
 	{
+		printk(KERN_ERR "[ERROR] random_number_generator: Failed to add char device.\n");
 		device_destroy(cl, first);
 		class_destroy(cl);
 		unregister_chrdev_region(first, 1);
 		return -1;
 	}
+	printk(KERN_INFO "[INFO] random_number_generator: Register success.\n");
 	return 0;
 }
 
 static void __exit exit_random_generator(void)
 {
-	printk("Uninstalling random-number generator...");
+	printk(KERN_INFO "[INFO] random_number_generator: Uninstalling\n");
 	cdev_del(&c_dev);
 	device_destroy(cl, first);
 	class_destroy(cl);
 	unregister_chrdev_region(first, 1);
-	printk(KERN_INFO "Finished");
+	printk(KERN_INFO "[INFO] random_number_generator: Uninstallation finished\n");
 }
 
 module_init(init_random_generator);
