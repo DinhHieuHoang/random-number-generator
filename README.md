@@ -7,15 +7,24 @@ Build the kernel object module
     $ make
     $ modinfo random_generator.ko
 
-    // clear the build
+To clean the build folder
+
     $ make clean
 
-## Install/Uninstall module
+## Installation
 
 Install the module
 
     $ sudo insmod random_generator.ko
     $ dmesg
+
+## Usage
+
+Read a random number from terminal
+
+    $ sudo cat /dev/random_generator
+
+## Uninstallation
 
 Uninstall the module
 
@@ -25,3 +34,13 @@ Uninstall the module
 Check the installation status
 
     $ lsmod | grep "random_generator"
+
+## Demo
+
+Main terminal:
+
+![demo1](demo1.png)
+
+Logging:
+
+![demo2](demo2.png)
